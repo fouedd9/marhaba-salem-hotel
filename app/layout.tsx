@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LocationProvider } from "@/components/location/location-provider";
 
 export const metadata: Metadata = {
   title: { default: "Marhaba Salem Resort", template: "%s · Marhaba Salem" },
@@ -17,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased"><LocationProvider>{children}</LocationProvider></body>
     </html>
   );
 }

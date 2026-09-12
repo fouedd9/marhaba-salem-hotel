@@ -1,0 +1,6 @@
+import test from "node:test"; import assert from "node:assert/strict"; import { resolveDestination,shortestRoute } from "./routing";
+test("finds the shortest route from reception to beach",()=>{const route=shortestRoute("reception","beach");assert.ok(route);assert.deepEqual(route.nodes.map(n=>n.id),["reception","lobby","garden","pool","beach-path","beach"]);assert.ok(route.seconds>0)});
+test("falls back to reception for an unknown start",()=>{const route=shortestRoute("somewhere-unknown","main-restaurant");assert.ok(route);assert.equal(route.nodes[0].placeSlug,"reception");assert.equal(route.startFallback,true)});
+test("resolves known destinations and rejects unknown ones",()=>{assert.equal(resolveDestination("kids-club")?.name,"Mini Club");assert.equal(resolveDestination("not-a-place"),null)});
+test("generates instructions from graph edge metadata",()=>{const route=shortestRoute("indoor-pool","beach");assert.ok(route);assert.equal(route.instructions[0],"Piscine couverte");assert.equal(route.instructions.at(-1),"Plage");assert.ok(route.instructions.some(step=>step.includes("plage")))});
+test("supports non-reception routes",()=>{assert.ok(shortestRoute("main-restaurant","kids-club"));assert.ok(shortestRoute("indoor-pool","beach"))});

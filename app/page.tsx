@@ -10,6 +10,7 @@ import { SectionHeader } from "@/components/guest/section-header";
 import { quickActions } from "@/lib/demo-data";
 import { getCurrentHotelLocation } from "@/lib/hotel-location";
 import { getAnnouncements, getTodayActivities } from "@/lib/services/hotel-service";
+import { LocationLink } from "@/components/location/location-link";
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ location?: string }> }) {
   const location = getCurrentHotelLocation((await searchParams).location);
@@ -28,6 +29,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ l
     </section>
     <div className="mx-auto max-w-7xl px-5 py-12 md:px-8 md:py-20">
       <section><SectionHeader eyebrow="Votre séjour, simplifié" title="Que souhaitez-vous faire ?"/><div className="grid grid-cols-2 gap-3 sm:grid-cols-4 md:gap-4">{quickActions.map(a=><QuickActionCard key={a.title} action={a}/>)}</div></section>
+      <section className="mt-10 rounded-[1.75rem] border border-[#ded9cf] bg-white p-6 md:p-8"><p className="text-xs font-bold uppercase tracking-[.18em] text-[#d66045]">Où souhaitez-vous aller ?</p><div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">{[["Plage","beach"],["Restaurant","main-restaurant"],["Piscines","outdoor-pools"],["Bien-être","wellness"]].map(([label,slug])=><LocationLink key={slug} href={`/map?destination=${slug}`} className="flex min-h-14 items-center justify-between rounded-2xl bg-[#e8efea] px-4 font-bold text-[#173d3c]">{label}<MapPin size={17}/></LocationLink>)}</div></section>
       <section className="mt-16 grid overflow-hidden rounded-[1.75rem] bg-[#173d3c] text-white md:grid-cols-2"><div className="relative min-h-64"><Image src="/images/marhaba-pool.webp" alt="Piscine extérieure et architecture blanche du Marhaba Salem" fill className="object-cover"/></div><div className="p-7 md:p-10"><p className="text-xs font-bold uppercase tracking-[.18em] text-[#f4ad99]">Piscines & plage</p><h2 className="font-display mt-3 text-3xl">À chacun son moment de détente.</h2><p className="mt-4 text-sm leading-relaxed text-white/70">Deux piscines d’eau douce, une grande piscine d’eau de mer avec toboggans, une piscine enfants et une piscine couverte chauffée en hiver avec jacuzzi.</p></div></section>
       <section className="mt-16"><SectionHeader eyebrow={new Intl.DateTimeFormat("fr-FR",{dateStyle:"full"}).format(new Date())} title="Aujourd’hui à l’hôtel" href="/activities"/><ActivityTimeline items={activities} compact/></section>
       <section className="mt-16"><AnnouncementCard announcement={announcements[0]}/></section>

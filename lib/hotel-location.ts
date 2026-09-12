@@ -1,7 +1,7 @@
 const locations: Record<string, string> = {
   reception: "Réception", "main-restaurant": "Restaurant principal", restaurant: "Restaurant principal",
   "indoor-pool": "Piscine couverte", pool: "Piscines extérieures", beach: "Plage de l’hôtel",
-  "la-pergola": "La Pergola", oxygen: "Bar piscine Oxygen", "kids-club": "Mini Club",
+  "la-pergola": "La Pergola", oxygen: "Bar piscine Oxygen", "oxygen-pool-bar":"Bar piscine Oxygen", "kids-club": "Mini Club", "outdoor-pools":"Piscines extérieures", wellness:"Espace bien-être", fitness:"Salle de sport", "moorish-cafe":"Café maure", "lobby-bar-obsolut":"Lobby Bar Obsolut",
 };
 
 export function getCurrentHotelLocation(location?: string | string[] | null) {
