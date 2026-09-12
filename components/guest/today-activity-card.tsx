@@ -1,0 +1,3 @@
+import { MapPin } from "lucide-react"; import type { ActivityPreview } from "@/types/hotel";
+const tones={teal:"bg-[#dcebea] text-[#0d5b59]",coral:"bg-[#f8dfd8] text-[#a64531]",sand:"bg-[#f0e6d3] text-[#795f31]"};
+export function TodayActivityCard({activity}:{activity:ActivityPreview}){return <article className="flex min-w-[260px] flex-1 items-center gap-4 rounded-[1.25rem] border border-[#e4dfd5] bg-white p-4"><time className={`grid h-14 min-w-16 place-items-center rounded-2xl text-sm font-extrabold ${tones[activity.tone??"teal"]}`}>{activity.time}</time><div><h3 className="font-display text-lg text-[#173d3c]">{activity.title}</h3><p className="mt-1 flex items-center gap-1 text-xs font-medium text-[#65716c]"><MapPin size={13}/>{activity.location}</p></div></article>}

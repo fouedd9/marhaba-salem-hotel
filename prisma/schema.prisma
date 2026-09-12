@@ -1,0 +1,198 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  SNACK
+}
+
+enum AnnouncementPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+enum InformationType {
+  WIFI
+  RECEPTION
+  CHECKOUT
+  EMERGENCY
+  TRANSPORT
+  GENERAL
+}
+
+model Hotel {
+  id              String             @id @default(cuid())
+  name            String
+  slug            String             @unique
+  timezone        String             @default("Europe/Paris")
+  address         String?
+  places          Place[]
+  placeCategories PlaceCategory[]
+  restaurants     Restaurant[]
+  activities      Activity[]
+  announcements   Announcement[]
+  information     HotelInformation[]
+  adminUsers      AdminUser[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+model PlaceCategory {
+  id      String  @id @default(cuid())
+  hotelId String
+  hotel   Hotel   @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  name    String
+  slug    String
+  icon    String?
+  places  Place[]
+
+  @@unique([hotelId, slug])
+}
+
+model Place {
+  id           String         @id @default(cuid())
+  hotelId      String
+  hotel        Hotel          @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  categoryId   String?
+  category     PlaceCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  name         String
+  slug         String
+  description  String?
+  imageUrl     String?
+  openingHours Json?
+  mapX         Float?
+  mapY         Float?
+  floor        Int            @default(0)
+  mapNodeId    String?
+  isActive     Boolean        @default(true)
+  activities   Activity[]
+  restaurants  Restaurant[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@unique([hotelId, slug])
+  @@index([hotelId, isActive])
+}
+
+model Restaurant {
+  id          String   @id @default(cuid())
+  hotelId     String
+  hotel       Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  placeId     String?
+  place       Place?   @relation(fields: [placeId], references: [id], onDelete: SetNull)
+  name        String
+  slug        String
+  description String?
+  cuisine     String?
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  menus       Menu[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([hotelId, slug])
+}
+
+model Menu {
+  id           String     @id @default(cuid())
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  title        String
+  date         DateTime   @db.Date
+  mealType     MealType
+  isActive     Boolean    @default(true)
+  items        MenuItem[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([restaurantId, date, mealType])
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  menuId      String
+  menu        Menu     @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  category    String?
+  allergens   String[]
+  dietaryTags String[]
+  price       Decimal? @db.Decimal(10, 2)
+  sortOrder   Int      @default(0)
+  isAvailable Boolean  @default(true)
+}
+
+model Activity {
+  id            String   @id @default(cuid())
+  hotelId       String
+  hotel         Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  placeId       String?
+  place         Place?   @relation(fields: [placeId], references: [id], onDelete: SetNull)
+  title         String
+  description   String?
+  startAt       DateTime
+  endAt         DateTime
+  locationLabel String
+  imageUrl      String?
+  capacity      Int?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([hotelId, startAt, isActive])
+}
+
+model Announcement {
+  id        String               @id @default(cuid())
+  hotelId   String
+  hotel     Hotel                @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  priority  AnnouncementPriority @default(NORMAL)
+  startsAt  DateTime
+  endsAt    DateTime?
+  isActive  Boolean              @default(true)
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+
+  @@index([hotelId, isActive, startsAt])
+}
+
+model HotelInformation {
+  id        String          @id @default(cuid())
+  hotelId   String
+  hotel     Hotel           @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  type      InformationType
+  title     String
+  content   String
+  sortOrder Int             @default(0)
+  isActive  Boolean         @default(true)
+  updatedAt DateTime        @updatedAt
+
+  @@index([hotelId, type, isActive])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  hotelId      String
+  hotel        Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         String   @default("EDITOR")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([hotelId, isActive])
+}
