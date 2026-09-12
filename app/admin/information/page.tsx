@@ -1,0 +1,2 @@
+import { AdminShell } from "@/components/admin/admin-shell"; import { CrudManager } from "@/components/admin/crud-manager";
+export default function Page(){return <AdminShell title="Informations pratiques"><CrudManager resource="information" fields={[{name:"title",label:"Titre",required:true},{name:"content",label:"Contenu",type:"textarea",required:true},{name:"type",label:"Type",type:"select",options:["WIFI","RECEPTION","CHECKOUT","EMERGENCY","TRANSPORT","GENERAL"]},{name:"isActive",label:"Actif",type:"checkbox"}]}/></AdminShell>}

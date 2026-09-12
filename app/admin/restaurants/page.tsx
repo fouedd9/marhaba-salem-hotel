@@ -1,0 +1,2 @@
+import { AdminShell } from "@/components/admin/admin-shell"; import { CrudManager } from "@/components/admin/crud-manager";
+export default function Page(){return <AdminShell title="Restaurants & bars"><CrudManager resource="restaurants" fields={[{name:"name",label:"Nom",required:true},{name:"slug",label:"Identifiant URL",required:true},{name:"description",label:"Description",type:"textarea"},{name:"cuisine",label:"Cuisine / service"},{name:"isActive",label:"Actif",type:"checkbox"}]}/></AdminShell>}

@@ -30,6 +30,25 @@ enum InformationType {
   GENERAL
 }
 
+enum ActivityCategory {
+  SPORT
+  KIDS
+  ENTERTAINMENT
+  WELLNESS
+  FOOD
+  NIGHTLIFE
+}
+
+enum AnnouncementType {
+  INFORMATION
+  EVENT
+  DINING
+  POOL
+  WEATHER
+  MAINTENANCE
+  IMPORTANT
+}
+
 model Hotel {
   id              String             @id @default(cuid())
   name            String
@@ -70,6 +89,7 @@ model Place {
   description  String?
   imageUrl     String?
   openingHours Json?
+  facilities   String[]
   mapX         Float?
   mapY         Float?
   floor        Int            @default(0)
@@ -95,6 +115,7 @@ model Restaurant {
   description String?
   cuisine     String?
   imageUrl    String?
+  openingHours Json?
   isActive    Boolean  @default(true)
   menus       Menu[]
   createdAt   DateTime @default(now())
@@ -127,6 +148,9 @@ model MenuItem {
   category    String?
   allergens   String[]
   dietaryTags String[]
+  isVegetarian Boolean  @default(false)
+  isSpicy      Boolean  @default(false)
+  imageUrl     String?
   price       Decimal? @db.Decimal(10, 2)
   sortOrder   Int      @default(0)
   isAvailable Boolean  @default(true)
@@ -140,11 +164,13 @@ model Activity {
   place         Place?   @relation(fields: [placeId], references: [id], onDelete: SetNull)
   title         String
   description   String?
+  category      ActivityCategory @default(ENTERTAINMENT)
   startAt       DateTime
   endAt         DateTime
   locationLabel String
   imageUrl      String?
   capacity      Int?
+  isFeatured    Boolean  @default(false)
   isActive      Boolean  @default(true)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -158,9 +184,12 @@ model Announcement {
   hotel     Hotel                @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   title     String
   content   String
+  type      AnnouncementType     @default(INFORMATION)
   priority  AnnouncementPriority @default(NORMAL)
   startsAt  DateTime
   endsAt    DateTime?
+  isFeatured Boolean             @default(false)
+  imageUrl   String?
   isActive  Boolean              @default(true)
   createdAt DateTime             @default(now())
   updatedAt DateTime             @updatedAt
