@@ -103,6 +103,8 @@ body {
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { min-width: 320px; overflow-x: hidden; }
+button,a { -webkit-tap-highlight-color: transparent; }
+@media (prefers-reduced-motion: no-preference) { a,button { transition: transform .18s ease, background-color .18s ease, color .18s ease; } }
 .font-display { font-family: Georgia, "Times New Roman", serif; }
 ::selection { background: #efb7a8; color: #173d3c; }
 @keyframes route-draw { from { stroke-dashoffset: 1000; } to { stroke-dashoffset: 0; } }

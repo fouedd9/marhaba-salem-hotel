@@ -87,6 +87,7 @@ model Place {
   name         String
   slug         String
   description  String?
+  translations Json?
   imageUrl     String?
   openingHours Json?
   facilities   String[]
@@ -113,6 +114,7 @@ model Restaurant {
   name        String
   slug        String
   description String?
+  translations Json?
   cuisine     String?
   imageUrl    String?
   openingHours Json?
@@ -164,6 +166,7 @@ model Activity {
   place         Place?   @relation(fields: [placeId], references: [id], onDelete: SetNull)
   title         String
   description   String?
+  translations  Json?
   category      ActivityCategory @default(ENTERTAINMENT)
   startAt       DateTime
   endAt         DateTime
@@ -184,6 +187,7 @@ model Announcement {
   hotel     Hotel                @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   title     String
   content   String
+  translations Json?
   type      AnnouncementType     @default(INFORMATION)
   priority  AnnouncementPriority @default(NORMAL)
   startsAt  DateTime
@@ -204,6 +208,7 @@ model HotelInformation {
   type      InformationType
   title     String
   content   String
+  translations Json?
   sortOrder Int             @default(0)
   isActive  Boolean         @default(true)
   updatedAt DateTime        @updatedAt
