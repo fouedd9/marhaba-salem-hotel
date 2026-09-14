@@ -1,3 +1,50 @@
-import Link from "next/link"; import { Activity, Bell, Building2, CircleGauge, Info, Utensils, Waves } from "lucide-react";
-const nav=[{label:"Vue d’ensemble",href:"/admin",icon:CircleGauge},{label:"Lieux",href:"/admin/places",icon:Building2},{label:"Restaurants",href:"/admin/restaurants",icon:Utensils},{label:"Activités",href:"/admin/activities",icon:Activity},{label:"Annonces",href:"/admin/announcements",icon:Bell},{label:"Informations",href:"/admin/information",icon:Info}];
-export function AdminSidebar(){return <aside className="hidden min-h-screen w-64 shrink-0 bg-[#123f3e] p-5 text-white lg:block"><Link href="/admin" className="flex h-16 items-center gap-3 border-b border-white/10"><span className="grid size-10 place-items-center rounded-xl bg-white/10"><Waves/></span><span><strong className="font-display block text-lg font-normal">Marhaba Salem</strong><small className="text-white/50">Administration</small></span></Link><nav className="mt-8 space-y-1">{nav.map(({label,href,icon:Icon})=><Link key={href} href={href} className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold text-white/70 hover:bg-white/10 hover:text-white"><Icon size={18}/>{label}</Link>)}</nav></aside>}
+import Link from "next/link";
+import {
+  Activity,
+  Bell,
+  Building2,
+  CircleGauge,
+  Info,
+  Utensils,
+  Waves,
+} from "lucide-react";
+const nav = [
+  { label: "Vue d’ensemble", href: "/admin", icon: CircleGauge },
+  { label: "Lieux", href: "/admin/places", icon: Building2 },
+  { label: "Restaurants", href: "/admin/restaurants", icon: Utensils },
+  { label: "Activités", href: "/admin/activities", icon: Activity },
+  { label: "Annonces", href: "/admin/announcements", icon: Bell },
+  { label: "Informations", href: "/admin/information", icon: Info },
+];
+export function AdminSidebar() {
+  return (
+    <aside className="hidden min-h-screen w-64 shrink-0 bg-[#123f3e] p-5 text-white lg:block">
+      <Link
+        href="/admin"
+        className="flex h-16 items-center gap-3 border-b border-white/10"
+      >
+        <span className="grid size-10 place-items-center rounded-xl bg-white/10">
+          <Waves />
+        </span>
+        <span>
+          <strong className="font-display block text-lg font-normal">
+            Marhaba Salem
+          </strong>
+          <small className="text-white/50">Administration</small>
+        </span>
+      </Link>
+      <nav className="mt-8 space-y-1">
+        {nav.map(({ label, href, icon: Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold text-white/70 hover:bg-white/10 hover:text-white"
+          >
+            <Icon size={18} />
+            {label}
+          </Link>
+        ))}
+      </nav>
+    </aside>
+  );
+}
