@@ -3,6 +3,7 @@ import "./globals.css";
 import { LocationProvider } from "@/components/location/location-provider";
 import { LanguageProvider } from "@/components/i18n/language-provider";
 import { RegisterServiceWorker } from "@/components/pwa/register-service-worker";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: { default: "Marhaba Salem Resort", template: "%s · Marhaba Salem" },
@@ -20,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className="antialiased"><RegisterServiceWorker/><LanguageProvider><LocationProvider>{children}</LocationProvider></LanguageProvider></body>
+      <body className="antialiased"><RegisterServiceWorker/><LanguageProvider><Suspense fallback={children}><LocationProvider>{children}</LocationProvider></Suspense></LanguageProvider></body>
     </html>
   );
 }
